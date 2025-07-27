@@ -1,0 +1,17 @@
+{
+  "name": "arca-invoicing-website",
+  "version": "1.0.0",
+  "description": "Arca Solutions Invoicing Website - Pure HTML/CSS/JS",
+  "main": "index.html",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "echo 'No build step needed for static HTML'",
+    "preview": "node server.js"
+  },
+  "keywords": ["invoicing", "html", "css", "javascript"],
+  "author": "Arca Solutions",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}
