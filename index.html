@@ -5,880 +5,1071 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Naira Invoice Solutions Invoicing Website</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Dropdown Navigation Styles */
+        .nav-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .dropdown-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .nav-dropdown:hover .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .nav-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #374151;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(53, 109, 0, 0.1);
+            color: rgba(53, 109, 0, 1);
+        }
+
+        /* Mobile Dropdown Styles */
+        .mobile-dropdown {
+            border-bottom: 1px solid #f3f4f6;
+            margin-bottom: 0.5rem;
+        }
+
+        .mobile-dropdown-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            color: #374151;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-dropdown-header:hover {
+            color: rgba(53, 109, 0, 1);
+        }
+
+        .mobile-dropdown-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-dropdown.active .mobile-dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .mobile-dropdown-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: rgba(248, 250, 252, 0.5);
+            border-radius: 0.5rem;
+            margin-left: 1rem;
+        }
+
+        .mobile-dropdown.active .mobile-dropdown-content {
+            max-height: 200px;
+            padding: 0.5rem 0;
+        }
+
+        .mobile-dropdown-item {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-dropdown-item:hover {
+            color: rgba(53, 109, 0, 1);
+            background: rgba(53, 109, 0, 0.1);
+        }
+
+        /* Hide dropdown on mobile screens for desktop nav */
+        @media (max-width: 639px) {
+            .nav-dropdown:hover .dropdown-menu {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Ensure proper spacing */
+        .nav-links {
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-content">
-                <!-- Logo -->
-                <div class="logo">
-                    <img src="public/companyLogoImage.jpeg" alt="Naira Invoice Logo" class="logo-image">
-                </div>
-
-                <!-- Desktop Navigation -->
-                <div class="nav-links">
-                    <a href="#about" class="nav-link">About Us</a>
-                    <a href="#services" class="nav-link">Services</a>
-                    <a href="#partners" class="nav-link">Partners</a>
-                    <a href="#help" class="nav-link">Help</a>
-                    <a href="#contact" class="nav-link">Contact Us</a>
-                </div>
-
-                <!-- Auth Buttons -->
-                <div class="auth-buttons">
-                    <button class="btn-login" onclick="window.location.href='http://naira-invoice.com.s3-website-us-east-1.amazonaws.com/auth/login'">Log in</button>
-                    <button class="btn-signup" onclick="window.location.href='http://naira-invoice.com.s3-website-us-east-1.amazonaws.com/auth/new-sign-up'">Sign Up</button>
-                </div>
-
-                <!-- Mobile Menu Button -->
-                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-                    <span class="hamburger"></span>
-                    <span class="hamburger"></span>
-                    <span class="hamburger"></span>
-                </button>
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-content">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="public/companyLogoImage.jpeg" alt="Naira Invoice Logo" class="logo-image">
             </div>
-        </div>
 
-        <!-- Mobile Menu -->
-        <div class="mobile-menu" id="mobileMenu">
-            <div class="mobile-menu-content">
-                <a href="#about" class="mobile-nav-link" onclick="closeMobileMenu()">About Us</a>
-                <a href="#services" class="mobile-nav-link" onclick="closeMobileMenu()">Services</a>
-                <a href="#partners" class="mobile-nav-link" onclick="closeMobileMenu()">Partners</a>
-                <a href="#help" class="mobile-nav-link" onclick="closeMobileMenu()">Help</a>
-                <a href="#contact" class="mobile-nav-link" onclick="closeMobileMenu()">Contact Us</a>
-                <div class="mobile-auth-buttons">
-                    <button class="btn-login" onclick="window.location.href='http://naira-invoice.com.s3-website-us-east-1.amazonaws.com/auth/login'">Log in</button>
-                    <button class="btn-signup" onclick="window.location.href='http://naira-invoice.com.s3-website-us-east-1.amazonaws.com/auth/new-sign-up'">Sign Up</button>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <!-- Background Elements -->
-        <div class="hero-background">
-            <div class="hero-shape hero-shape-1"></div>
-            <div class="hero-shape hero-shape-2"></div>
-            <div class="hero-shape hero-shape-3"></div>
-            <div class="hero-grid"></div>
-        </div>
-
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <div class="hero-badge">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            <!-- Desktop Navigation -->
+            <div class="nav-links">
+                <a href="#about" class="nav-link">About Us</a>
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#partners" class="nav-link">Partners</a>
+                <div class="nav-dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        Developers
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dropdown-arrow">
+                            <polyline points="6,9 12,15 18,9"/>
                         </svg>
-                        <span>FIRS Compliant Platform</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="apidocumentation.html" class="dropdown-item">Get Started</a>
+                        <a href="#" class="dropdown-item">API documentation</a>
                     </div>
-                    <h1 class="hero-title">
-                        <span class="hero-title-main">Effortless Invoicing</span>
-                        <span class="hero-title-accent">With Complete Compliance</span>
-                    </h1>
-                    <p class="hero-description">
-                        Create, manage, and track your invoices with our FIRS-compliant E-Invoice platform, integrated
-                        directly with efficient financial management.
-                    </p>
+                </div>
+                <a href="#help" class="nav-link">Help</a>
+                <a href="#cta" class="nav-link">Contact Us</a>
+            </div>
 
-                    <!-- Trust Indicators -->
-                    <div class="hero-trust">
-                        <div class="trust-item">
-                            <div class="trust-number">1000+</div>
-                            <div class="trust-label">Happy Clients</div>
+            <!-- Auth Buttons -->
+            <div class="auth-buttons">
+                <button class="btn-login" onclick="window.location.href='http://naira-invoice.com.s3-website-us-east-1.amazonaws.com/auth/login'">Log in</button>
+                <button class="btn-signup" onclick="window.location.href='http://naira-invoice.com.s3-website-us-east-1.amazonaws.com/auth/new-sign-up'">Sign Up</button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <a href="#about" class="mobile-nav-link" onclick="closeMobileMenu()">About Us</a>
+            <a href="#services" class="mobile-nav-link" onclick="closeMobileMenu()">Services</a>
+            <a href="#partners" class="mobile-nav-link" onclick="closeMobileMenu()">Partners</a>
+            <div class="mobile-dropdown">
+                <div class="mobile-dropdown-header" onclick="toggleMobileDropdown()">
+                    <span>Developers</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mobile-dropdown-arrow">
+                        <polyline points="6,9 12,15 18,9"/>
+                    </svg>
+                </div>
+                <div class="mobile-dropdown-content" id="mobileDropdown">
+                    <a href="apidocumentation.html" class="mobile-dropdown-item" onclick="closeMobileMenu()">Get Started</a>
+                    <a href="#" class="mobile-dropdown-item" onclick="closeMobileMenu()">API documentation</a>
+                </div>
+            </div>
+            <a href="#help" class="mobile-nav-link" onclick="closeMobileMenu()">Help</a>
+            <a href="#contact" class="mobile-nav-link" onclick="closeMobileMenu()">Contact Us</a>
+            <div class="mobile-auth-buttons">
+                <button class="btn-login" onclick="window.location.href='http://naira-invoice.com.s3-website-us-east-1.amazonaws.com/auth/login'">Log in</button>
+                <button class="btn-signup" onclick="window.location.href='http://naira-invoice.com.s3-website-us-east-1.amazonaws.com/auth/new-sign-up'">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <!-- Background Elements -->
+    <div class="hero-background">
+        <div class="hero-shape hero-shape-1"></div>
+        <div class="hero-shape hero-shape-2"></div>
+        <div class="hero-shape hero-shape-3"></div>
+        <div class="hero-grid"></div>
+    </div>
+
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                    <span>FIRS Compliant Platform</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="hero-title-main">Effortless Invoicing</span>
+                    <span class="hero-title-accent">With Complete Compliance</span>
+                </h1>
+                <p class="hero-description">
+                    Create, manage, and track your invoices with our FIRS-compliant E-Invoice platform, integrated
+                    directly with efficient financial management.
+                </p>
+
+                <!-- Trust Indicators -->
+                <div class="hero-trust">
+                    <div class="trust-item">
+                        <div class="trust-number">1000+</div>
+                        <div class="trust-label">Happy Clients</div>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-number">24/7</div>
+                        <div class="trust-label">Support</div>
+                    </div>
+                </div>
+
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="window.location.href='apidocumentation.html'">
+                        <div class="btn-content">
+                            <span>Get started</span>
                         </div>
-                        <div class="trust-item">
-                            <div class="trust-number">24/7</div>
-                            <div class="trust-label">Support</div>
+                        <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                    <button class="btn-secondary" onclick="window.location.href='apidocumentation.html'">
+                        <svg class="play-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5,3 19,12 5,21"/>
+                        </svg>
+                        <span>Test API</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <div class="hero-image-background">
+                    <div class="image-glow"></div>
+                </div>
+                <div class="ipad-container">
+                    <img src="public/heroback.png" alt="iPad Frame" class="ipad-frame">
+
+                    <!-- Floating Elements -->
+                    <div class="floating-card floating-card-1">
+                        <div class="card-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">100% Secure</div>
+                            <div class="card-subtitle">Bank-level encryption</div>
                         </div>
                     </div>
 
-                    <div class="hero-buttons">
-                        <button class="btn-primary" onclick="window.location.href='http://naira-invoice.com.s3-website-us-east-1.amazonaws.com/auth/new-sign-up'">
-                            <div class="btn-content">
-                                <span>Start Free Trial</span>
-                                <div class="btn-subtitle">No credit card required</div>
+                    <div class="floating-card floating-card-2">
+                        <div class="card-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">Real-time</div>
+                            <div class="card-subtitle">Instant updates</div>
+                        </div>
+                    </div>
+
+                    <div class="floating-card floating-card-3">
+                        <div class="card-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">FIRS Compliant</div>
+                            <div class="card-subtitle">Fully certified</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trusted Clients -->
+<section id="partners" class="trusted-clients">
+    <div class="trusted-header-container">
+        <!-- Background Elements -->
+        <div class="trusted-background">
+            <div class="trusted-shape trusted-shape-1"></div>
+            <div class="trusted-shape trusted-shape-2"></div>
+            <div class="trusted-shape trusted-shape-3"></div>
+        </div>
+
+        <div class="trusted-content">
+            <div class="trusted-badge">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <span>Trusted Partners</span>
+            </div>
+            <h2 class="trusted-title">Powering Success for 1,000+ Clients Worldwide</h2>
+            <p class="trusted-subtitle">Join the growing community of businesses that trust our platform</p>
+        </div>
+    </div>
+
+    <div class="clients-list-container">
+        <!-- Scrolling Container -->
+        <div class="clients-list">
+            <div class="clients-fade clients-fade-left"></div>
+            <div class="clients-fade clients-fade-right"></div>
+            <div class="clients-track">
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/first_bank_logo.png" alt="etranzact" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/airtel.png" alt="FairMoney" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/NIBSS.png" alt="flutterwave" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/unionbank.png" alt="Interswitch" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/downloadinterswitch.png" alt="mastercard" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/rmb.svg" alt="MoMo" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/fidelity_bank.png" alt="etranzact" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/Stanbic_ibtc.png" alt="FairMoney" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/citibank.png" alt="flutterwave" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/bankly.svg" alt="Interswitch" class="client-logo">
+                    </div>
+                </div>
+
+                <!-- Duplicate for seamless scrolling -->
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/first_bank_logo.png" alt="etranzact" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/airtel.png" alt="FairMoney" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/NIBSS.png" alt="flutterwave" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/unionbank.png" alt="Interswitch" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/downloadinterswitch.png" alt="mastercard" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/rmb.svg" alt="MoMo" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/fidelity_bank.png" alt="etranzact" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/Stanbic_ibtc.png" alt="FairMoney" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/citibank.png" alt="flutterwave" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/bankly.svg" alt="Interswitch" class="client-logo">
+                    </div>
+                </div>
+
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/fidelity_bank.png" alt="etranzact" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/Stanbic_ibtc.png" alt="FairMoney" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/citibank.png" alt="flutterwave" class="client-logo">
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-logo-container">
+                        <img src="public/bankly.svg" alt="Interswitch" class="client-logo">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Us Section -->
+<section id="about" class="about">
+    <div class="container">
+        <!-- Background Elements -->
+        <div class="about-background">
+            <div class="about-shape about-shape-1"></div>
+            <div class="about-shape about-shape-2"></div>
+            <div class="about-shape about-shape-3"></div>
+        </div>
+
+        <div class="about-header">
+            <div class="about-badge">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <span>About Us</span>
+            </div>
+            <h2 class="about-title">Who We Are</h2>
+            <p class="about-subtitle">Empowering businesses across Africa with innovative financial solutions</p>
+        </div>
+
+        <div class="about-content">
+            <div class="about-visual">
+                <div class="image-stack">
+                    <div class="image-card image-card-1">
+                        <img id="aboutImage" src="public/ourVisionAboutUsImage.jpeg" alt="Team collaboration" class="about-img">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                </svg>
+                                <span>Our Team</span>
                             </div>
-                            <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        </div>
+                    </div>
+
+                    <div class="stats-card">
+                        <div class="stat-item">
+                            <div class="stat-number">1000+</div>
+                            <div class="stat-label">Clients</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Countries</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">99%</div>
+                            <div class="stat-label">Uptime</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-content-text">
+                <div class="mission-section">
+                    <div class="mission-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <div class="mission-content">
+                        <h3 class="mission-title">Our Mission</h3>
+                        <p class="mission-description">
+                            We are on a mission to create a feature-rich financial solutions & services ecosystem,
+                            delivered through open and flexible digital platforms.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="about-description">
+                    <p>
+                        Naira Invoice empowers businesses and financial institutions to navigate Africa's dynamic payments landscape with
+                        ease and flexibility. Our customer-centered solutions bridge the gap between financial entities and Africa's
+                        digital economy, fostering seamless connections across payments, banking, and commerce.
+                    </p>
+                    <p>
+                        Driven by a commitment to innovation, excellence, and transparent collaboration, we deliver secure, adaptable platforms
+                        designed to support a robust ecosystem of digital financial services—across Africa and beyond.
+                    </p>
+                </div>
+
+                <div class="about-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                        <span>Secure & Compliant</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </div>
+                        <span>Lightning Fast</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                                <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                <line x1="15" y1="9" x2="15.01" y2="9"/>
+                            </svg>
+                        </div>
+                        <span>User Friendly</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="services">
+    <div class="container">
+        <div class="services-header">
+            <h2 class="section-title">Naira Invoice Solutions</h2>
+        </div>
+
+        <div class="services-content">
+            <div class="solutions-list">
+                <div class="solution-item active" data-solution="0">
+                    <div class="solution-content">
+                        <div class="solution-number">01</div>
+                        <div class="solution-details">
+                            <div class="solution-header">
+                                <svg class="solution-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14,2 14,8 20,8"/>
+                                    <line x1="16" y1="13" x2="8" y2="13"/>
+                                    <line x1="16" y1="17" x2="8" y2="17"/>
+                                    <polyline points="10,9 9,9 8,9"/>
+                                </svg>
+                                <h3 class="solution-title">E-Invoicing</h3>
+                            </div>
+                            <p class="solution-description">Create, manage, and track your invoices with our FIRS-compliant E-Invoice platform, integrated directly with efficient financial management.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="solution-item" data-solution="1">
+                    <div class="solution-content">
+                        <div class="solution-number">02</div>
+                        <div class="solution-details">
+                            <div class="solution-header">
+                                <svg class="solution-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                                <h3 class="solution-title">Invoice Compliance</h3>
+                            </div>
+                            <p class="solution-description">Stay compliant with Nigerian tax regulations through our streamlined invoice compliance service, ensuring your invoices meet all necessary requirements.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="solution-item" data-solution="2">
+                    <div class="solution-content">
+                        <div class="solution-number">03</div>
+                        <div class="solution-details">
+                            <div class="solution-header">
+                                <svg class="solution-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 4v16l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V4l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"/>
+                                    <path d="M9 9h6v6H9z"/>
+                                </svg>
+                                <h3 class="solution-title">Invoice Record Management</h3>
+                            </div>
+                            <p class="solution-description">Efficiently organize and manage all your invoice records with our comprehensive record management system, making data retrieval simple and fast.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="solution-image">
+                <div class="image-container">
+                    <img id="solutionImage" src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800" alt="E-Invoicing" class="solution-img">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Help Section -->
+<section id="help" class="help">
+    <div class="container">
+        <!-- Background Elements -->
+        <div class="help-background">
+            <div class="help-circle help-circle-1"></div>
+            <div class="help-circle help-circle-2"></div>
+            <div class="help-circle help-circle-3"></div>
+        </div>
+
+        <div class="help-header">
+            <div class="help-badge">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span>Getting Started</span>
+            </div>
+            <h2 class="help-title">Your Journey in 3 Simple Steps</h2>
+            <p class="help-subtitle">Transform your invoicing process with our streamlined approach</p>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step">
+                <div class="step-number">01</div>
+                <div class="step-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="8.5" cy="7" r="4"/>
+                        <line x1="20" y1="8" x2="20" y2="14"/>
+                        <line x1="23" y1="11" x2="17" y2="11"/>
+                    </svg>
+                </div>
+                <div class="step-content">
+                    <h3 class="step-title">Create an Account</h3>
+                    <p class="step-description">
+                        Getting started is quick and easy - simply sign up for your account to
+                        access our comprehensive suite of invoice management tools.
+                    </p>
+                    <div class="step-features">
+                        <span class="feature-tag">Free Setup</span>
+                        <span class="feature-tag">Instant Access</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">02</div>
+                <div class="step-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    </svg>
+                </div>
+                <div class="step-content">
+                    <h3 class="step-title">Fill in Your Invoice Details</h3>
+                    <p class="step-description">
+                        Effortlessly fill in your invoice details using our user-friendly interface, enabling you
+                        to create and customize your invoices to clearly and accurately list items or services.
+                    </p>
+                    <div class="step-features">
+                        <span class="feature-tag">Smart Templates</span>
+                        <span class="feature-tag">Auto-Fill</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">03</div>
+                <div class="step-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+                    </svg>
+                </div>
+                <div class="step-content">
+                    <h3 class="step-title">Track & Manage</h3>
+                    <p class="step-description">
+                        Ensure proper documentation and management of your invoice records with our service,
+                        helping you maintain organized and accessible financial documentation for easy reference and compliance.
+                    </p>
+                    <div class="step-features">
+                        <span class="feature-tag">Real-time Tracking</span>
+                        <span class="feature-tag">Analytics</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Process Flow -->
+        <div class="process-flow">
+            <div class="flow-line"></div>
+            <div class="flow-dots">
+                <div class="flow-dot active"></div>
+                <div class="flow-dot"></div>
+                <div class="flow-dot"></div>
+            </div>
+        </div>
+
+        <!-- Demo Browser -->
+        <div class="demo-browser">
+            <div class="demo-header-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                    <line x1="8" y1="21" x2="16" y2="21"/>
+                    <line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+                <span>Live Preview</span>
+            </div>
+            <div class="browser-header">
+                <div class="browser-controls">
+                    <div class="control red"></div>
+                    <div class="control yellow"></div>
+                    <div class="control green"></div>
+                    <div class="browser-url">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+                        </svg>
+                        <span>app.nairainvoice.com</span>
+                    </div>
+                </div>
+            </div>
+            <div class="browser-content">
+                <div class="demo-interface">
+                    <div class="demo-header">
+                        <div class="demo-logo">
+                            <img src="public/companyLogoImage.jpeg" alt="Naira Invoice Logo" class="demo-logo-image">
+                        </div>
+                        <div class="demo-user">
+                            <div class="user-avatar">SO</div>
+                            <span>Sinclair Orofin</span>
+                        </div>
+                    </div>
+
+                    <div class="demo-content">
+                        <div class="demo-sidebar">
+                            <h4 class="sidebar-title">MAIN</h4>
+                            <div class="sidebar-links">
+                                <div class="sidebar-link active">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+                                    </svg>
+                                    <span>Dashboard</span>
+                                </div>
+                                <div class="sidebar-link">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14,2 14,8 20,8"/>
+                                    </svg>
+                                    <span>Invoices</span>
+                                </div>
+                                <div class="sidebar-link">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="8.5" cy="7" r="4"/>
+                                    </svg>
+                                    <span>Clients</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="demo-main">
+                            <div class="demo-main-header">
+                                <h4 class="demo-title">Invoice Dashboard</h4>
+                                <p class="demo-subtitle">Manage and track all your invoices</p>
+                            </div>
+
+                            <div class="demo-stats">
+                                <div class="stat-card">
+                                    <div class="stat-value">₦2.4M</div>
+                                    <div class="stat-label">Total Revenue</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value">156</div>
+                                    <div class="stat-label">Active Invoices</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value">98%</div>
+                                    <div class="stat-label">Compliance Rate</div>
+                                </div>
+                            </div>
+
+                            <div class="demo-tabs">
+                                <button class="demo-tab">Pending Review</button>
+                                <button class="demo-tab active">Approved</button>
+                                <button class="demo-tab">Declined</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta" id="cta">
+    <div class="container">
+        <div class="cta-content">
+            <h2 class="cta-title">Ready to start your journey with us?</h2>
+            <p class="cta-description">Join the many businesses benefiting from Naira Invoice's innovative solutions</p>
+
+            <button class="cta-button" onclick="window.location.href='http://naira-invoice.com.s3-website-us-east-1.amazonaws.com/auth/new-sign-up'">
+                <span>Sign Up</span>
+                <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer id="contact" class="footer-new">
+    <!-- Decorative Wave -->
+    <div class="footer-wave">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="currentColor"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="currentColor"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="currentColor"></path>
+        </svg>
+    </div>
+
+    <div class="container">
+        <div class="footer-main">
+            <!-- Company Info Section -->
+            <div class="footer-brand">
+                <div class="footer-logo-section">
+                    <img src="public/companyLogoImage.jpeg" alt="Naira Invoice Logo" class="footer-logo-image">
+                    <h3 class="footer-brand-name">Naira Invoice</h3>
+                </div>
+                <p class="footer-tagline">
+                    Naira Invoice empowers businesses and financial institutions to navigate Africa's dynamic
+                    payments landscape with ease and flexibility. Building the future of African fintech.
+                </p>
+
+                <!-- Social Media -->
+                <div class="footer-social">
+                    <h4 class="footer-social-title">Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="LinkedIn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Facebook">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-links-section">
+                <h4 class="footer-section-title">Quick Links</h4>
+                <div class="footer-links-grid">
+                    <a href="#about" class="footer-nav-link">About Us</a>
+                    <a href="#services" class="footer-nav-link">Services</a>
+                    <a href="#partners" class="footer-nav-link">Partners</a>
+                    <a href="#help" class="footer-nav-link">Help Center</a>
+                    <!--                        <a href="#" class="footer-nav-link">Pricing</a>-->
+                    <!--                        <a href="#" class="footer-nav-link">Blog</a>-->
+                    <!--                        <a href="#" class="footer-nav-link">Careers</a>-->
+                </div>
+            </div>
+
+            <!-- Legal -->
+            <div class="footer-legal-section">
+                <h4 class="footer-section-title">Developer</h4>
+                <div class="footer-links-grid">
+                    <a href="apidocumentation.html" class="footer-nav-link">Get Started</a>
+                    <a href="#" class="footer-nav-link">API documentation</a>
+                    <a href="#" class="footer-nav-link">API status</a>
+                    <a href="#" class="footer-nav-link">Privacy Policy</a>
+                </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="footer-contact-section">
+                <h4 class="footer-section-title">Get in Touch</h4>
+                <div class="contact-info">
+                    <div class="contact-item-new">
+                        <div class="contact-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                        </div>
+                        <div class="contact-details">
+                            <span class="contact-label">Email</span>
+                            <span class="contact-value">info@nairainvoice.network</span>
+                        </div>
+                    </div>
+
+                    <div class="contact-item-new">
+                        <div class="contact-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                        </div>
+                        <div class="contact-details">
+                            <span class="contact-label">Phone</span>
+                            <span class="contact-value">+234 700 272 2729</span>
+                        </div>
+                    </div>
+
+                    <div class="contact-item-new">
+                        <div class="contact-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                        </div>
+                        <div class="contact-details">
+                            <span class="contact-label">Address</span>
+                            <span class="contact-value">Plot 5A, Furo Ezimora, Marwa, Lekki</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Newsletter Signup -->
+        <div class="footer-newsletter">
+            <div class="newsletter-content">
+                <div class="newsletter-text">
+                    <h4 class="newsletter-title">Stay Updated</h4>
+                    <p class="newsletter-description">Get the latest updates on new features and industry insights.</p>
+                </div>
+                <div class="newsletter-form">
+                    <div class="input-group">
+                        <input type="email" placeholder="Enter your email" class="newsletter-input">
+                        <button class="newsletter-button">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>
                         </button>
-                        <button class="btn-secondary">
-                            <svg class="play-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="5,3 19,12 5,21"/>
-                            </svg>
-                            <span>Request a Demo</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="hero-image">
-                    <div class="hero-image-background">
-                        <div class="image-glow"></div>
-                    </div>
-                    <div class="ipad-container">
-                        <img src="public/heroback.png" alt="iPad Frame" class="ipad-frame">
-
-                        <!-- Floating Elements -->
-                        <div class="floating-card floating-card-1">
-                            <div class="card-icon">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                </svg>
-                            </div>
-                            <div class="card-content">
-                                <div class="card-title">100% Secure</div>
-                                <div class="card-subtitle">Bank-level encryption</div>
-                            </div>
-                        </div>
-
-                        <div class="floating-card floating-card-2">
-                            <div class="card-icon">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                                </svg>
-                            </div>
-                            <div class="card-content">
-                                <div class="card-title">Real-time</div>
-                                <div class="card-subtitle">Instant updates</div>
-                            </div>
-                        </div>
-
-                        <div class="floating-card floating-card-3">
-                            <div class="card-icon">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                            </div>
-                            <div class="card-content">
-                                <div class="card-title">FIRS Compliant</div>
-                                <div class="card-subtitle">Fully certified</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Trusted Clients -->
-    <section id="partners" class="trusted-clients">
-        <div class="trusted-header-container">
-            <!-- Background Elements -->
-            <div class="trusted-background">
-                <div class="trusted-shape trusted-shape-1"></div>
-                <div class="trusted-shape trusted-shape-2"></div>
-                <div class="trusted-shape trusted-shape-3"></div>
-            </div>
-
-            <div class="trusted-content">
-                <div class="trusted-badge">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                    </svg>
-                    <span>Trusted Partners</span>
-                </div>
-                <h2 class="trusted-title">Powering Success for 1,000+ Clients Worldwide</h2>
-                <p class="trusted-subtitle">Join the growing community of businesses that trust our platform</p>
-            </div>
-        </div>
-
-        <div class="clients-list-container">
-            <!-- Scrolling Container -->
-            <div class="clients-list">
-                <div class="clients-fade clients-fade-left"></div>
-                <div class="clients-fade clients-fade-right"></div>
-                <div class="clients-track">
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/first_bank_logo.png" alt="etranzact" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/airtel.png" alt="FairMoney" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/NIBSS.png" alt="flutterwave" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/unionbank.png" alt="Interswitch" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/downloadinterswitch.png" alt="mastercard" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/rmb.svg" alt="MoMo" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/fidelity_bank.png" alt="etranzact" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/Stanbic_ibtc.png" alt="FairMoney" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/citibank.png" alt="flutterwave" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/bankly.svg" alt="Interswitch" class="client-logo">
-                        </div>
-                    </div>
-
-                    <!-- Duplicate for seamless scrolling -->
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/first_bank_logo.png" alt="etranzact" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/airtel.png" alt="FairMoney" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/NIBSS.png" alt="flutterwave" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/unionbank.png" alt="Interswitch" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/downloadinterswitch.png" alt="mastercard" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/rmb.svg" alt="MoMo" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/fidelity_bank.png" alt="etranzact" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/Stanbic_ibtc.png" alt="FairMoney" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/citibank.png" alt="flutterwave" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/bankly.svg" alt="Interswitch" class="client-logo">
-                        </div>
-                    </div>
-
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/fidelity_bank.png" alt="etranzact" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/Stanbic_ibtc.png" alt="FairMoney" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/citibank.png" alt="flutterwave" class="client-logo">
-                        </div>
-                    </div>
-                    <div class="client-card">
-                        <div class="client-logo-container">
-                            <img src="public/bankly.svg" alt="Interswitch" class="client-logo">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Us Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <!-- Background Elements -->
-            <div class="about-background">
-                <div class="about-shape about-shape-1"></div>
-                <div class="about-shape about-shape-2"></div>
-                <div class="about-shape about-shape-3"></div>
-            </div>
-
-            <div class="about-header">
-                <div class="about-badge">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                        <circle cx="9" cy="7" r="4"/>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                    </svg>
-                    <span>About Us</span>
-                </div>
-                <h2 class="about-title">Who We Are</h2>
-                <p class="about-subtitle">Empowering businesses across Africa with innovative financial solutions</p>
-            </div>
-
-            <div class="about-content">
-                <div class="about-visual">
-                    <div class="image-stack">
-                        <div class="image-card image-card-1">
-                            <img id="aboutImage" src="public/ourVisionAboutUsImage.jpeg" alt="Team collaboration" class="about-img">
-                            <div class="image-overlay">
-                                <div class="overlay-content">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                                        <circle cx="9" cy="7" r="4"/>
-                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                                    </svg>
-                                    <span>Our Team</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="stats-card">
-                            <div class="stat-item">
-                                <div class="stat-number">1000+</div>
-                                <div class="stat-label">Clients</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-number">50+</div>
-                                <div class="stat-label">Countries</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-number">99%</div>
-                                <div class="stat-label">Uptime</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="about-content-text">
-                    <div class="mission-section">
-                        <div class="mission-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                            </svg>
-                        </div>
-                        <div class="mission-content">
-                            <h3 class="mission-title">Our Mission</h3>
-                            <p class="mission-description">
-                                We are on a mission to create a feature-rich financial solutions & services ecosystem,
-                                delivered through open and flexible digital platforms.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="about-description">
-                        <p>
-                            Naira Invoice empowers businesses and financial institutions to navigate Africa's dynamic payments landscape with
-                            ease and flexibility. Our customer-centered solutions bridge the gap between financial entities and Africa's
-                            digital economy, fostering seamless connections across payments, banking, and commerce.
-                        </p>
-                        <p>
-                            Driven by a commitment to innovation, excellence, and transparent collaboration, we deliver secure, adaptable platforms
-                            designed to support a robust ecosystem of digital financial services—across Africa and beyond.
-                        </p>
-                    </div>
-
-                    <div class="about-features">
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                </svg>
-                            </div>
-                            <span>Secure & Compliant</span>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                                </svg>
-                            </div>
-                            <span>Lightning Fast</span>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-                                    <line x1="9" y1="9" x2="9.01" y2="9"/>
-                                    <line x1="15" y1="9" x2="15.01" y2="9"/>
-                                </svg>
-                            </div>
-                            <span>User Friendly</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <div class="services-header">
-                <h2 class="section-title">Naira Invoice Solutions</h2>
-            </div>
-
-            <div class="services-content">
-                <div class="solutions-list">
-                    <div class="solution-item active" data-solution="0">
-                        <div class="solution-content">
-                            <div class="solution-number">01</div>
-                            <div class="solution-details">
-                                <div class="solution-header">
-                                    <svg class="solution-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                        <polyline points="14,2 14,8 20,8"/>
-                                        <line x1="16" y1="13" x2="8" y2="13"/>
-                                        <line x1="16" y1="17" x2="8" y2="17"/>
-                                        <polyline points="10,9 9,9 8,9"/>
-                                    </svg>
-                                    <h3 class="solution-title">E-Invoicing</h3>
-                                </div>
-                                <p class="solution-description">Create, manage, and track your invoices with our FIRS-compliant E-Invoice platform, integrated directly with efficient financial management.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="solution-item" data-solution="1">
-                        <div class="solution-content">
-                            <div class="solution-number">02</div>
-                            <div class="solution-details">
-                                <div class="solution-header">
-                                    <svg class="solution-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                    </svg>
-                                    <h3 class="solution-title">Invoice Compliance</h3>
-                                </div>
-                                <p class="solution-description">Stay compliant with Nigerian tax regulations through our streamlined invoice compliance service, ensuring your invoices meet all necessary requirements.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="solution-item" data-solution="2">
-                        <div class="solution-content">
-                            <div class="solution-number">03</div>
-                            <div class="solution-details">
-                                <div class="solution-header">
-                                    <svg class="solution-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M1 4v16l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V4l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"/>
-                                        <path d="M9 9h6v6H9z"/>
-                                    </svg>
-                                    <h3 class="solution-title">Invoice Record Management</h3>
-                                </div>
-                                <p class="solution-description">Efficiently organize and manage all your invoice records with our comprehensive record management system, making data retrieval simple and fast.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="solution-image">
-                    <div class="image-container">
-                        <img id="solutionImage" src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800" alt="E-Invoicing" class="solution-img">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Help Section -->
-    <section id="help" class="help">
-        <div class="container">
-            <!-- Background Elements -->
-            <div class="help-background">
-                <div class="help-circle help-circle-1"></div>
-                <div class="help-circle help-circle-2"></div>
-                <div class="help-circle help-circle-3"></div>
-            </div>
-
-            <div class="help-header">
-                <div class="help-badge">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                    <span>Getting Started</span>
-                </div>
-                <h2 class="help-title">Your Journey in 3 Simple Steps</h2>
-                <p class="help-subtitle">Transform your invoicing process with our streamlined approach</p>
-            </div>
-
-            <div class="steps-grid">
-                <div class="step">
-                    <div class="step-number">01</div>
-                    <div class="step-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                            <circle cx="8.5" cy="7" r="4"/>
-                            <line x1="20" y1="8" x2="20" y2="14"/>
-                            <line x1="23" y1="11" x2="17" y2="11"/>
-                        </svg>
-                    </div>
-                    <div class="step-content">
-                        <h3 class="step-title">Create an Account</h3>
-                        <p class="step-description">
-                            Getting started is quick and easy - simply sign up for your account to
-                            access our comprehensive suite of invoice management tools.
-                        </p>
-                        <div class="step-features">
-                            <span class="feature-tag">Free Setup</span>
-                            <span class="feature-tag">Instant Access</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step">
-                    <div class="step-number">02</div>
-                    <div class="step-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                        </svg>
-                    </div>
-                    <div class="step-content">
-                        <h3 class="step-title">Fill in Your Invoice Details</h3>
-                        <p class="step-description">
-                            Effortlessly fill in your invoice details using our user-friendly interface, enabling you
-                            to create and customize your invoices to clearly and accurately list items or services.
-                        </p>
-                        <div class="step-features">
-                            <span class="feature-tag">Smart Templates</span>
-                            <span class="feature-tag">Auto-Fill</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step">
-                    <div class="step-number">03</div>
-                    <div class="step-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
-                        </svg>
-                    </div>
-                    <div class="step-content">
-                        <h3 class="step-title">Track & Manage</h3>
-                        <p class="step-description">
-                            Ensure proper documentation and management of your invoice records with our service,
-                            helping you maintain organized and accessible financial documentation for easy reference and compliance.
-                        </p>
-                        <div class="step-features">
-                            <span class="feature-tag">Real-time Tracking</span>
-                            <span class="feature-tag">Analytics</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Process Flow -->
-            <div class="process-flow">
-                <div class="flow-line"></div>
-                <div class="flow-dots">
-                    <div class="flow-dot active"></div>
-                    <div class="flow-dot"></div>
-                    <div class="flow-dot"></div>
-                </div>
-            </div>
-
-            <!-- Demo Browser -->
-            <div class="demo-browser">
-                <div class="demo-header-badge">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                        <line x1="8" y1="21" x2="16" y2="21"/>
-                        <line x1="12" y1="17" x2="12" y2="21"/>
-                    </svg>
-                    <span>Live Preview</span>
-                </div>
-                <div class="browser-header">
-                    <div class="browser-controls">
-                        <div class="control red"></div>
-                        <div class="control yellow"></div>
-                        <div class="control green"></div>
-                        <div class="browser-url">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="3"/>
-                                <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
-                            </svg>
-                            <span>app.nairainvoice.com</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="browser-content">
-                    <div class="demo-interface">
-                        <div class="demo-header">
-                            <div class="demo-logo">
-                                <img src="public/companyLogoImage.jpeg" alt="Naira Invoice Logo" class="demo-logo-image">
-                            </div>
-                            <div class="demo-user">
-                                <div class="user-avatar">SO</div>
-                                <span>Sinclair Orofin</span>
-                            </div>
-                        </div>
-
-                        <div class="demo-content">
-                            <div class="demo-sidebar">
-                                <h4 class="sidebar-title">MAIN</h4>
-                                <div class="sidebar-links">
-                                    <div class="sidebar-link active">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
-                                        </svg>
-                                        <span>Dashboard</span>
-                                    </div>
-                                    <div class="sidebar-link">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                            <polyline points="14,2 14,8 20,8"/>
-                                        </svg>
-                                        <span>Invoices</span>
-                                    </div>
-                                    <div class="sidebar-link">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                                            <circle cx="8.5" cy="7" r="4"/>
-                                        </svg>
-                                        <span>Clients</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="demo-main">
-                                <div class="demo-main-header">
-                                    <h4 class="demo-title">Invoice Dashboard</h4>
-                                    <p class="demo-subtitle">Manage and track all your invoices</p>
-                                </div>
-
-                                <div class="demo-stats">
-                                    <div class="stat-card">
-                                        <div class="stat-value">₦2.4M</div>
-                                        <div class="stat-label">Total Revenue</div>
-                                    </div>
-                                    <div class="stat-card">
-                                        <div class="stat-value">156</div>
-                                        <div class="stat-label">Active Invoices</div>
-                                    </div>
-                                    <div class="stat-card">
-                                        <div class="stat-value">98%</div>
-                                        <div class="stat-label">Compliance Rate</div>
-                                    </div>
-                                </div>
-
-                                <div class="demo-tabs">
-                                    <button class="demo-tab">Pending Review</button>
-                                    <button class="demo-tab active">Approved</button>
-                                    <button class="demo-tab">Declined</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">Ready to start your journey with us?</h2>
-                <p class="cta-description">Join the many businesses benefiting from Naira Invoice's innovative solutions</p>
-
-                    <button class="cta-button" onclick="window.location.href='http://naira-invoice.com.s3-website-us-east-1.amazonaws.com/auth/new-sign-up'">
-                        <span>Sign Up</span>
-                    <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer id="contact" class="footer-new">
-        <!-- Decorative Wave -->
-        <div class="footer-wave">
-            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="currentColor"></path>
-                <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="currentColor"></path>
-                <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="currentColor"></path>
-            </svg>
-        </div>
-
-        <div class="container">
-            <div class="footer-main">
-                <!-- Company Info Section -->
-                <div class="footer-brand">
-                    <div class="footer-logo-section">
-                        <img src="public/companyLogoImage.jpeg" alt="Naira Invoice Logo" class="footer-logo-image">
-                        <h3 class="footer-brand-name">Naira Invoice</h3>
-                    </div>
-                    <p class="footer-tagline">
-                        Naira Invoice empowers businesses and financial institutions to navigate Africa's dynamic
-                        payments landscape with ease and flexibility. Building the future of African fintech.
-                    </p>
-
-                    <!-- Social Media -->
-                    <div class="footer-social">
-                        <h4 class="footer-social-title">Follow Us</h4>
-                        <div class="social-links">
-                            <a href="#" class="social-link" aria-label="LinkedIn">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                                </svg>
-                            </a>
-                            <a href="#" class="social-link" aria-label="Twitter">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                                </svg>
-                            </a>
-                            <a href="#" class="social-link" aria-label="Instagram">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                                </svg>
-                            </a>
-                            <a href="#" class="social-link" aria-label="Facebook">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Links -->
-                <div class="footer-links-section">
-                    <h4 class="footer-section-title">Quick Links</h4>
-                    <div class="footer-links-grid">
-                        <a href="#about" class="footer-nav-link">About Us</a>
-                        <a href="#services" class="footer-nav-link">Services</a>
-                        <a href="#partners" class="footer-nav-link">Partners</a>
-                        <a href="#help" class="footer-nav-link">Help Center</a>
-                        <a href="#" class="footer-nav-link">Pricing</a>
-                        <a href="#" class="footer-nav-link">Blog</a>
-                        <a href="#" class="footer-nav-link">Careers</a>
-                    </div>
-                </div>
-
-                <!-- Legal -->
-                <div class="footer-legal-section">
-                    <h4 class="footer-section-title">Legal</h4>
-                    <div class="footer-links-grid">
-                        <a href="#" class="footer-nav-link">Privacy Policy</a>
-                        <a href="#" class="footer-nav-link">Terms of Service</a>
-                        <a href="#" class="footer-nav-link">Cookie Policy</a>
-                        <a href="#" class="footer-nav-link">GDPR</a>
-                    </div>
-                </div>
-
-                <!-- Contact Info -->
-                <div class="footer-contact-section">
-                    <h4 class="footer-section-title">Get in Touch</h4>
-                    <div class="contact-info">
-                        <div class="contact-item-new">
-                            <div class="contact-icon">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                                    <polyline points="22,6 12,13 2,6"/>
-                                </svg>
-                            </div>
-                            <div class="contact-details">
-                                <span class="contact-label">Email</span>
-                                <span class="contact-value">info@nairainvoice.network</span>
-                            </div>
-                        </div>
-
-                        <div class="contact-item-new">
-                            <div class="contact-icon">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                                </svg>
-                            </div>
-                            <div class="contact-details">
-                                <span class="contact-label">Phone</span>
-                                <span class="contact-value">+234 700 272 2729</span>
-                            </div>
-                        </div>
-
-                        <div class="contact-item-new">
-                            <div class="contact-icon">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                                    <circle cx="12" cy="10" r="3"/>
-                                </svg>
-                            </div>
-                            <div class="contact-details">
-                                <span class="contact-label">Address</span>
-                                <span class="contact-value">Plot 5A, Furo Ezimora, Marwa, Lekki</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Newsletter Signup -->
-            <div class="footer-newsletter">
-                <div class="newsletter-content">
-                    <div class="newsletter-text">
-                        <h4 class="newsletter-title">Stay Updated</h4>
-                        <p class="newsletter-description">Get the latest updates on new features and industry insights.</p>
-                    </div>
-                    <div class="newsletter-form">
-                        <div class="input-group">
-                            <input type="email" placeholder="Enter your email" class="newsletter-input">
-                            <button class="newsletter-button">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer Bottom -->
-            <div class="footer-bottom-new">
-                <div class="footer-bottom-content">
-                    <p class="copyright-new">© 2024 Naira Invoice. All rights reserved.</p>
-                    <div class="footer-bottom-links">
-                        <span class="footer-divider">•</span>
-                        <span class="footer-status">
+        <!-- Footer Bottom -->
+        <div class="footer-bottom-new">
+            <div class="footer-bottom-content">
+                <p class="copyright-new">© 2024 Naira Invoice. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <span class="footer-divider">•</span>
+                    <span class="footer-status">
                             <span class="status-dot"></span>
                             All systems operational
                         </span>
-                    </div>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
+<script>
+    // Mobile dropdown functionality
+    function toggleMobileDropdown() {
+        const mobileDropdown = document.querySelector('.mobile-dropdown');
+        mobileDropdown.classList.toggle('active');
+    }
+
+    // Close mobile dropdown when menu closes
+    function closeMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileDropdown = document.querySelector('.mobile-dropdown');
+        mobileMenu.classList.remove('active');
+        if (mobileDropdown) {
+            mobileDropdown.classList.remove('active');
+        }
+    }
+
+    // Enhanced mobile menu toggle
+    function toggleMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenu.classList.toggle('active');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        const navDropdown = document.querySelector('.nav-dropdown');
+        const mobileDropdown = document.querySelector('.mobile-dropdown');
+
+        // Close desktop dropdown if clicking outside
+        if (navDropdown && !navDropdown.contains(event.target)) {
+            // Desktop dropdown closes automatically on hover out
+        }
+
+        // Close mobile dropdown if clicking outside mobile menu
+        if (mobileDropdown && !mobileDropdown.contains(event.target)) {
+            mobileDropdown.classList.remove('active');
+        }
+    });
+</script>
 </body>
 </html>
